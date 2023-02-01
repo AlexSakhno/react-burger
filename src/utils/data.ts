@@ -1,4 +1,4 @@
-import { TIngredient } from '../components/burger-ingredients/burger-ingredients.types';
+import { TIngredient } from './burger-ingredients.types';
 
 export const data: TIngredient[] = [
   {

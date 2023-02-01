@@ -26,6 +26,10 @@
   background-color: #8585AD; 
 }
 
+.tabs {
+  display: flex;
+}
+
 .ingredients {
   display: flex;
   flex-wrap: wrap;

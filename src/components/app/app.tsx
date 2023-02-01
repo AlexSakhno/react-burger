@@ -8,9 +8,7 @@ import styles from './app.module.css';
 const App = () => {
   return (
     <>
-      <header>
-        <AppHeader />
-      </header>
+      <AppHeader />
       <main className={styles.container}>
         <section className={styles.context}>
           <BurgerIngredients />
