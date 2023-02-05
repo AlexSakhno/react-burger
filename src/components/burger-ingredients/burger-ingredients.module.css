@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 600px;  
+}
+
+.title {
+  width: 100%;
+}
+
+.context {
+  height: 800px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.context::-webkit-scrollbar {
+  width: 8px;
+}
+
+.context::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.context::-webkit-scrollbar-thumb {
+  background-color: #8585AD; 
+}
+
+.tabs {
+  display: flex;
+}
+
+.ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ingredient {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  width: 272px;
+  align-items: center;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 70px;
+}
+
+.name {
+  text-align: center;
+}
+
+.counter {
+  position: absolute;
+  right: 20px;
+}
