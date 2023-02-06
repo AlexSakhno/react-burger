@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.structure {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.structure__item {
+  display: flex;
+  flex-direction: column;
+  width: 125px;  
+}
