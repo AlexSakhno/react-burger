@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuidv4 } from 'uuid';
 
 import Ingredient from '../ingredient';
 
@@ -21,7 +20,7 @@ const BurgerIngredients: FC<Props> = ({ data }) => {
 
       return (
         <Tab
-          key={uuidv4()}
+          key={name}
           value={name}
           active={current === name}
           onClick={setCurrent}
@@ -36,7 +35,7 @@ const BurgerIngredients: FC<Props> = ({ data }) => {
     return tabs.map((tab) => {
       const name = tab.name;
       return (
-        <div key={uuidv4()}>
+        <div key={tab.name}>
           <h2
             className='text text_type_main-medium pt-10'
             data-ankor={tab.name}
@@ -46,7 +45,7 @@ const BurgerIngredients: FC<Props> = ({ data }) => {
           <div className={`${styles.ingredients} mb-10`}>
             {data.map((item) => {
               return (
-                item.type === name && <Ingredient key={uuidv4()} {...item} />
+                item.type === name && <Ingredient key={item._id} {...item} />
               );
             })}
           </div>

@@ -6,10 +6,10 @@ import {
   Button,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuidv4 } from 'uuid';
 
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import { order } from '../../utils/data';
 import { TIngredient } from '../../utils/types';
@@ -20,9 +20,17 @@ interface Props {
 }
 
 const BurgerConstructor: FC<Props> = ({ data }) => {
-  const [isModal, setIsModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const datas = data.slice(0, data.length / 2);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const totalPrice = () =>
     datas.reduce((acc, item) => {
@@ -30,20 +38,19 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
     }, 0);
 
   const ingredients = () => {
-    return datas.map((item, index) => {
+    return datas.map((item) => {
       return (
-        <div key={uuidv4()}>
-          {!index ||
-            (index !== datas.length - 1 && (
-              <div className={`${styles.item} mb-4`}>
-                <DragIcon type='primary' />
-                <ConstructorElement
-                  price={item.price}
-                  text={item.name}
-                  thumbnail={item.image_mobile}
-                />
-              </div>
-            ))}
+        <div key={item._id}>
+          {item.type !== 'bun' && (
+            <div className={`${styles.item} mb-4`}>
+              <DragIcon type='primary' />
+              <ConstructorElement
+                price={item.price}
+                text={item.name}
+                thumbnail={item.image_mobile}
+              />
+            </div>
+          )}
         </div>
       );
     });
@@ -78,7 +85,7 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
           htmlType='button'
           type='primary'
           size='large'
-          onClick={() => setIsModal(true)}
+          onClick={handleOpenModal}
         >
           Оформить заказ
         </Button>
@@ -86,9 +93,15 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
           <CurrencyIcon type='primary' /> {totalPrice()}
         </span>
       </div>
-      <Modal isModal={isModal} setIsModal={setIsModal}>
-        <OrderDetails id={order.id} status={order.status} />
-      </Modal>
+      {isModalOpen && (
+        <>
+          <ModalOverlay onClose={handleCloseModal}>
+            <Modal onClose={handleCloseModal}>
+              <OrderDetails id={order.id} status={order.status} />
+            </Modal>
+          </ModalOverlay>
+        </>
+      )}
     </div>
   );
 };

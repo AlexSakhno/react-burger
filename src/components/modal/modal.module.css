@@ -1,6 +1,7 @@
 .container {
   width: 720px;
   background: #1C1C21;
+  margin: 0 auto;
 
   border: 1px solid rgba(76, 76, 255, 0.2);
 
@@ -8,6 +9,7 @@
   border-radius: 40px;
 
   z-index: 1;
+
 } 
 
 .header {

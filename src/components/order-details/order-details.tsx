@@ -10,7 +10,7 @@ const OrderDetails: FC<TOrder> = ({ id, status }) => {
       <span className={`${styles.text} text text_type_main-medium`}>
         индефикатор заказа
       </span>
-      <img src={Done} alt='' className='m-15' />
+      <img src={Done} alt='Заказ оформлен' className='m-15' />
       <span className={` text text_type_main-default`}>{status}</span>
       <span
         className={` text text_type_main-default text_color_inactive mt-2 mb-30`}

@@ -3,22 +3,26 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuidv4 } from 'uuid';
 import { TIngredient } from '../../utils/types';
 import styles from './ingredient.module.css';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details';
+import ModalOverlay from '../modal-overlay';
 
 const Ingredient: FC<TIngredient> = (props) => {
-  const [isModal, setIsModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const addIngredient = () => {
-    setIsModal(true);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <>
-      <div className={styles.ingredient} onClick={addIngredient}>
+      <div className={styles.ingredient} onClick={handleOpenModal}>
         <img src={props.image} alt={props.name} />
         <Counter count={0} extraClass={styles.counter} />
         <span className={`${styles.price} text text_type_main-default`}>
@@ -27,13 +31,15 @@ const Ingredient: FC<TIngredient> = (props) => {
         </span>
         <h3 className={styles.name}>{props.name}</h3>
       </div>
-      <Modal
-        isModal={isModal}
-        setIsModal={setIsModal}
-        title={'Детали ингредиента'}
-      >
-        <IngredientDetails {...props} />
-      </Modal>
+      {isModalOpen && (
+        <>
+          <ModalOverlay onClose={handleCloseModal}>
+            <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
+              <IngredientDetails {...props} />
+            </Modal>
+          </ModalOverlay>
+        </>
+      )}
     </>
   );
 };

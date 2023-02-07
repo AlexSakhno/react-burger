@@ -1,13 +1,15 @@
 export const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export const fetchData = async () => {
-  try {
-    const data = await fetch(BASE_URL).then((resp) => {
-      return resp.json();
+  const data = await fetch(BASE_URL)
+    .then((resp) => {
+      if (resp.ok) {
+        return resp.json();
+      } else throw Error('Ошибка ответа сервера!');
+    })
+    .catch((err) => {
+      console.log(err);
     });
 
-    return data;
-  } catch (error) {
-    throw Error('Ошибка запроса');
-  }
+  return data;
 };

@@ -13,13 +13,20 @@ import styles from './app.module.css';
 const App = () => {
   const [state, setState] = useState<TIngredient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetchData().then((resp) => setState(resp.data));
+    fetchData()
+      .then((resp) => setState(resp.data))
+      .catch(() => setError(true));
 
-    setTimeout(() => {
-      if (state.length) setLoading(false);
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
     }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [state.length]);
 
   return (
@@ -37,6 +44,8 @@ const App = () => {
               wrapperClass=''
               visible={true}
             />
+          ) : error ? (
+            <span>Ошибка получения данных.</span>
           ) : (
             <>
               <BurgerIngredients data={state} />

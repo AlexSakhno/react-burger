@@ -5,7 +5,7 @@ import styles from './ingredient-details.module.css';
 const IngredientDetails: FC<TIngredient> = (props) => {
   return (
     <div className={styles.container}>
-      <img src={props.image_large} alt='' className='mb-4' />
+      <img src={props.image_large} alt={props.name} className='mb-4' />
       <span className={`${styles.text} text text_type_main-large mb-8`}>
         {props.name}
       </span>
