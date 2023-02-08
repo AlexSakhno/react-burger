@@ -9,7 +9,6 @@ import {
 
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details';
-import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import { order } from '../../utils/data';
 import { TIngredient } from '../../utils/types';
@@ -95,11 +94,9 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
       </div>
       {isModalOpen && (
         <>
-          <ModalOverlay onClose={handleCloseModal}>
-            <Modal onClose={handleCloseModal}>
-              <OrderDetails id={order.id} status={order.status} />
-            </Modal>
-          </ModalOverlay>
+          <Modal onClose={handleCloseModal}>
+            <OrderDetails id={order.id} status={order.status} />
+          </Modal>
         </>
       )}
     </div>

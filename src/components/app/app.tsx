@@ -18,16 +18,9 @@ const App = () => {
   useEffect(() => {
     fetchData()
       .then((resp) => setState(resp.data))
-      .catch(() => setError(true));
-
-    const timeoutId = setTimeout(() => {
-      setLoading(false);
-    }, 500);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [state.length]);
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <>

@@ -7,7 +7,6 @@ import { TIngredient } from '../../utils/types';
 import styles from './ingredient.module.css';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details';
-import ModalOverlay from '../modal-overlay';
 
 const Ingredient: FC<TIngredient> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,11 +32,9 @@ const Ingredient: FC<TIngredient> = (props) => {
       </div>
       {isModalOpen && (
         <>
-          <ModalOverlay onClose={handleCloseModal}>
-            <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
-              <IngredientDetails {...props} />
-            </Modal>
-          </ModalOverlay>
+          <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
+            <IngredientDetails {...props} />
+          </Modal>
         </>
       )}
     </>

@@ -1,4 +1,15 @@
 .container {
+  position:fixed;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  top:0px;
+  left:0px;
+  width:100vw;
+  height:100vh;
+}
+
+.modal {
   width: 720px;
   background: #1C1C21;
   margin: 0 auto;
@@ -9,7 +20,6 @@
   border-radius: 40px;
 
   z-index: 1;
-
 } 
 
 .header {
