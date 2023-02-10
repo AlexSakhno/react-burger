@@ -1,0 +1,32 @@
+.container {
+  position:fixed;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  top:0px;
+  left:0px;
+  width:100vw;
+  height:100vh;
+}
+
+.modal {
+  width: 720px;
+  background: #1C1C21;
+  margin: 0 auto;
+
+  border: 1px solid rgba(76, 76, 255, 0.2);
+
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+
+  z-index: 1;
+} 
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  cursor: pointer;
+}

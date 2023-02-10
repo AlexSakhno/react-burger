@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import {
   DragIcon,
@@ -6,13 +6,30 @@ import {
   Button,
   ConstructorElement,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { v4 as uuidv4 } from 'uuid';
 
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details';
+
+import { order } from '../../utils/data';
+import { TIngredient } from '../../utils/types';
 import styles from './burger-constructor.module.css';
-import { data } from '../../utils/data';
 
-const BurgerConstructor: FC = () => {
+interface Props {
+  data: TIngredient[];
+}
+
+const BurgerConstructor: FC<Props> = ({ data }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const datas = data.slice(0, data.length / 2);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const totalPrice = () =>
     datas.reduce((acc, item) => {
@@ -20,20 +37,19 @@ const BurgerConstructor: FC = () => {
     }, 0);
 
   const ingredients = () => {
-    return datas.map((item, index) => {
+    return datas.map((item) => {
       return (
-        <div key={uuidv4()}>
-          {!index ||
-            (index !== datas.length - 1 && (
-              <div className={`${styles.item} mb-4`}>
-                <DragIcon type='primary' />
-                <ConstructorElement
-                  price={item.price}
-                  text={item.name}
-                  thumbnail={item.image_mobile}
-                />
-              </div>
-            ))}
+        <div key={item._id}>
+          {item.type !== 'bun' && (
+            <div className={`${styles.item} mb-4`}>
+              <DragIcon type='primary' />
+              <ConstructorElement
+                price={item.price}
+                text={item.name}
+                thumbnail={item.image_mobile}
+              />
+            </div>
+          )}
         </div>
       );
     });
@@ -43,7 +59,6 @@ const BurgerConstructor: FC = () => {
     <div className={`${styles.container} mt-25`}>
       <div className={`${styles.item} mb-4 pl-8`}>
         <ConstructorElement
-          key={uuidv4()}
           price={data[0].price}
           text={`${data[0].name}\n(верх)`}
           thumbnail={data[0].image_mobile}
@@ -65,13 +80,25 @@ const BurgerConstructor: FC = () => {
         />
       </div>
       <div className={`${styles.total} mt-10`}>
-        <Button htmlType='button' type='primary' size='large'>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='large'
+          onClick={handleOpenModal}
+        >
           Оформить заказ
         </Button>
         <span className={`${styles.totalPrice} text text_type_digits-medium`}>
           <CurrencyIcon type='primary' /> {totalPrice()}
         </span>
       </div>
+      {isModalOpen && (
+        <>
+          <Modal onClose={handleCloseModal}>
+            <OrderDetails id={order.id} status={order.status} />
+          </Modal>
+        </>
+      )}
     </div>
   );
 };

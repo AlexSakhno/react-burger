@@ -1,0 +1,27 @@
+.ingredient {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  width: 272px;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 70px;
+}
+
+.name {
+  text-align: center;
+}
+
+.counter {
+  position: absolute;
+  right: 20px;
+}
