@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
 import {
   DragIcon,
@@ -10,21 +10,22 @@ import {
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details';
 
-import { order } from '../../utils/data';
-import { TIngredient } from '../../utils/types';
 import styles from './burger-constructor.module.css';
+import { IngredientContext } from '../../context/ingredientContext';
+import { postFetch } from '../../api';
+import { TOrder } from '../../utils/types';
 
-interface Props {
-  data: TIngredient[];
-}
-
-const BurgerConstructor: FC<Props> = ({ data }) => {
+const BurgerConstructor: FC = () => {
+  const data = useContext(IngredientContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [order, setOrder] = useState<TOrder>();
+  const [error, setError] = useState(false);
 
   const datas = data.slice(0, data.length / 2);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    getOrder();
   };
 
   const handleCloseModal = () => {
@@ -53,6 +54,14 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
         </div>
       );
     });
+  };
+
+  const getOrder = () => {
+    const ids = datas.map((item) => item._id);
+
+    postFetch('/orders', { ingredients: ids })
+      .then((resp) => setOrder(resp))
+      .catch(() => setError(true));
   };
 
   return (
@@ -95,7 +104,8 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
       {isModalOpen && (
         <>
           <Modal onClose={handleCloseModal}>
-            <OrderDetails id={order.id} status={order.status} />
+            {error && 'Ошибка получения данных...'}
+            {order && <OrderDetails {...order} />}
           </Modal>
         </>
       )}

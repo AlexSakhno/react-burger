@@ -1,17 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import Ingredient from '../ingredient';
 
+import { IngredientContext } from '../../context/ingredientContext';
 import { tabs } from '../../utils/data';
-import { TIngredient } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 
-interface Props {
-  data: TIngredient[];
-}
-
-const BurgerIngredients: FC<Props> = ({ data }) => {
+const BurgerIngredients: FC = () => {
+  const data = useContext(IngredientContext);
   const [current, setCurrent] = useState('bun');
 
   const tabsConstructor = () => {

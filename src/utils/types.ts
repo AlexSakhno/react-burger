@@ -22,6 +22,9 @@ export type TTabs = {
 };
 
 export type TOrder = {
-  id: string;
-  status: string;
+  name?: string;
+  order: {
+    number: number;
+  };
+  success: string;
 };
