@@ -1,9 +1,9 @@
+import { checkResponse } from '../utils/utils';
+
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 export const getFetch = async (url: string) => {
-  const data = await fetch(`${BASE_URL}${url}`).then((resp) =>
-    checkResponse(resp)
-  );
+  const data = await fetch(`${BASE_URL}${url}`).then(checkResponse);
 
   return data;
 };
@@ -19,13 +19,7 @@ export const postFetch = async (url: string, data: IdIngredients) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify(data),
-  }).then((resp) => checkResponse(resp));
+  }).then(checkResponse);
 
   return result;
-};
-
-const checkResponse = (resp: Response) => {
-  if (resp.ok) {
-    return resp.json();
-  } else throw Error('Ошибка ответа сервера!');
 };
