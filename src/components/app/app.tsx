@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bars } from 'react-loader-spinner';
 
 import AppHeader from '../app-header';
@@ -18,39 +18,39 @@ const App = () => {
 
   useEffect(() => {
     getFetch('/ingredients')
-      .then((resp) => setState(resp.data))
+      .then((resp) => {
+        setState(resp.data);
+      })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
 
   return (
-    <>
-      <IngredientContext.Provider value={state}>
-        <AppHeader />
-        <main className={styles.container}>
-          <section className={styles.context}>
-            {loading ? (
-              <Bars
-                height='80'
-                width='80'
-                color='#66c7ff'
-                ariaLabel='bars-loading'
-                wrapperStyle={{}}
-                wrapperClass=''
-                visible={true}
-              />
-            ) : error ? (
-              <span>Ошибка получения данных.</span>
-            ) : (
-              <>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </>
-            )}
-          </section>
-        </main>
-      </IngredientContext.Provider>
-    </>
+    <IngredientContext.Provider value={state}>
+      <AppHeader />
+      <main className={styles.container}>
+        <section className={styles.context}>
+          {loading ? (
+            <Bars
+              height='80'
+              width='80'
+              color='#66c7ff'
+              ariaLabel='bars-loading'
+              wrapperStyle={{}}
+              wrapperClass=''
+              visible={true}
+            />
+          ) : error ? (
+            <span>Ошибка получения данных.</span>
+          ) : (
+            <>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </>
+          )}
+        </section>
+      </main>
+    </IngredientContext.Provider>
   );
 };
 

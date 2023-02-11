@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import Ingredient from '../ingredient';
@@ -11,7 +11,18 @@ const BurgerIngredients: FC = () => {
   const data = useContext(IngredientContext);
   const [current, setCurrent] = useState('bun');
 
-  const tabsConstructor = () => {
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
+
+  const refArr = { bun: bunRef, sauce: sauceRef, main: mainRef };
+
+  const handleTabClick = (tabRef: any, tab: string) => {
+    tabRef.current.scrollIntoView({ behavior: 'smooth' });
+    setCurrent(tab);
+  };
+
+  const tabsConstructor = useMemo(() => {
     return tabs.map((tab) => {
       const { name, title } = tab;
 
@@ -20,19 +31,20 @@ const BurgerIngredients: FC = () => {
           key={name}
           value={name}
           active={current === name}
-          onClick={setCurrent}
+          onClick={() => handleTabClick(refArr[name], name)}
         >
           {title}
         </Tab>
       );
     });
-  };
+  }, [current, refArr]);
 
-  const ingrConstruction = () => {
+  const ingrConstruction = useMemo(() => {
     return tabs.map((tab) => {
       const name = tab.name;
+
       return (
-        <div key={tab.name}>
+        <section key={tab.name} ref={refArr[tab.name]}>
           <h2
             className='text text_type_main-medium pt-10'
             data-ankor={tab.name}
@@ -46,18 +58,18 @@ const BurgerIngredients: FC = () => {
               );
             })}
           </div>
-        </div>
+        </section>
       );
     });
-  };
+  }, [data, refArr]);
 
   return (
     <div className={`${styles.container}`}>
       <h1 className={`${styles.title} text text_type_main-large pb-5`}>
         Соберите бургер
       </h1>
-      <div className={styles.tabs}>{tabsConstructor()}</div>
-      <section className={styles.context}>{ingrConstruction()}</section>
+      <div className={styles.tabs}>{tabsConstructor}</div>
+      <section className={styles.context}>{ingrConstruction}</section>
     </div>
   );
 };

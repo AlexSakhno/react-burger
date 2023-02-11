@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 
 import {
   DragIcon,
@@ -32,12 +32,15 @@ const BurgerConstructor: FC = () => {
     setIsModalOpen(false);
   };
 
-  const totalPrice = () =>
-    datas.reduce((acc, item) => {
-      return (acc = acc + item.price);
-    }, 0);
+  const totalPrice = useMemo(
+    () =>
+      datas.reduce((acc, item) => {
+        return (acc = acc + item.price);
+      }, 0),
+    [datas]
+  );
 
-  const ingredients = () => {
+  const ingredients = useMemo(() => {
     return datas.map((item) => {
       return (
         <div key={item._id}>
@@ -54,7 +57,7 @@ const BurgerConstructor: FC = () => {
         </div>
       );
     });
-  };
+  }, [datas]);
 
   const getOrder = () => {
     const ids = datas.map((item) => item._id);
@@ -76,7 +79,7 @@ const BurgerConstructor: FC = () => {
         />
       </div>
 
-      <div className={`${styles.ingridients} mb-4 pr-4`}>{ingredients()}</div>
+      <div className={`${styles.ingridients} mb-4 pr-4`}>{ingredients}</div>
 
       <div className={`${styles.item} mb-4 pl-8`}>
         <ConstructorElement
@@ -98,7 +101,7 @@ const BurgerConstructor: FC = () => {
           Оформить заказ
         </Button>
         <span className={`${styles.totalPrice} text text_type_digits-medium`}>
-          <CurrencyIcon type='primary' /> {totalPrice()}
+          <CurrencyIcon type='primary' /> {totalPrice}
         </span>
       </div>
       {isModalOpen && (

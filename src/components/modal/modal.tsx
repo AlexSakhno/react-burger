@@ -35,22 +35,20 @@ const Modal: React.FC<Props> = ({ onClose, children, title }) => {
   }
 
   return createPortal(
-    <>
-      <div className={styles.container}>
-        <ModalOverlay onClose={onClose} />
-        <div className={`${styles.modal} p-10`} onClick={handleContainerClick}>
-          <header className={`${styles.header}`}>
-            <div className={`${styles.title} text text_type_main-medium`}>
-              {title}
-            </div>
-            <div className={styles.close} onClick={onClose}>
-              <CloseIcon type='primary' />
-            </div>
-          </header>
-          {children}
-        </div>
+    <div className={styles.container}>
+      <ModalOverlay onClose={onClose} />
+      <div className={`${styles.modal} p-10`} onClick={handleContainerClick}>
+        <header className={`${styles.header}`}>
+          <div className={`${styles.title} text text_type_main-medium`}>
+            {title}
+          </div>
+          <div className={styles.close} onClick={onClose}>
+            <CloseIcon type='primary' />
+          </div>
+        </header>
+        {children}
       </div>
-    </>,
+    </div>,
     modalsContainer
   );
 };
