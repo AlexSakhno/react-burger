@@ -5,7 +5,8 @@ import AppHeader from '../app-header';
 import BurgerConstructor from '../burger-constructor';
 import BurgerIngredients from '../burger-ingredients';
 
-import { fetchData } from '../../api';
+import { IngredientContext } from '../../context/ingredientContext';
+import { getFetch } from '../../api';
 import { TIngredient } from '../../utils/types';
 
 import styles from './app.module.css';
@@ -16,14 +17,16 @@ const App = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetchData()
-      .then((resp) => setState(resp.data))
+    getFetch('/ingredients')
+      .then((resp) => {
+        setState(resp.data);
+      })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
 
   return (
-    <>
+    <IngredientContext.Provider value={state}>
       <AppHeader />
       <main className={styles.container}>
         <section className={styles.context}>
@@ -41,13 +44,13 @@ const App = () => {
             <span>Ошибка получения данных.</span>
           ) : (
             <>
-              <BurgerIngredients data={state} />
-              <BurgerConstructor data={state} />
+              <BurgerIngredients />
+              <BurgerConstructor />
             </>
           )}
         </section>
       </main>
-    </>
+    </IngredientContext.Provider>
   );
 };
 

@@ -20,24 +20,20 @@ const Ingredient: FC<TIngredient> = (props) => {
   };
 
   return (
-    <>
-      <div className={styles.ingredient} onClick={handleOpenModal}>
-        <img src={props.image} alt={props.name} />
-        <Counter count={0} extraClass={styles.counter} />
-        <span className={`${styles.price} text text_type_main-default`}>
-          {props.price}
-          <CurrencyIcon type='primary' />
-        </span>
-        <h3 className={styles.name}>{props.name}</h3>
-      </div>
+    <div className={styles.ingredient} onClick={handleOpenModal}>
+      <img src={props.image} alt={props.name} />
+      <Counter count={0} extraClass={styles.counter} />
+      <span className={`${styles.price} text text_type_main-default`}>
+        {props.price}
+        <CurrencyIcon type='primary' />
+      </span>
+      <h3 className={styles.name}>{props.name}</h3>
       {isModalOpen && (
-        <>
-          <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
-            <IngredientDetails {...props} />
-          </Modal>
-        </>
+        <Modal onClose={handleCloseModal} title={'Детали ингредиента'}>
+          <IngredientDetails {...props} />
+        </Modal>
       )}
-    </>
+    </div>
   );
 };
 

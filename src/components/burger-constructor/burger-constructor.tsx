@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 
 import {
   DragIcon,
@@ -10,33 +10,37 @@ import {
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details';
 
-import { order } from '../../utils/data';
-import { TIngredient } from '../../utils/types';
 import styles from './burger-constructor.module.css';
+import { IngredientContext } from '../../context/ingredientContext';
+import { postFetch } from '../../api';
+import { TOrder } from '../../utils/types';
 
-interface Props {
-  data: TIngredient[];
-}
-
-const BurgerConstructor: FC<Props> = ({ data }) => {
+const BurgerConstructor: FC = () => {
+  const data = useContext(IngredientContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [order, setOrder] = useState<TOrder>();
+  const [error, setError] = useState(false);
 
   const datas = data.slice(0, data.length / 2);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    getOrder();
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  const totalPrice = () =>
-    datas.reduce((acc, item) => {
-      return (acc = acc + item.price);
-    }, 0);
+  const totalPrice = useMemo(
+    () =>
+      datas.reduce((acc, item) => {
+        return (acc = acc + item.price);
+      }, 0),
+    [datas]
+  );
 
-  const ingredients = () => {
+  const ingredients = useMemo(() => {
     return datas.map((item) => {
       return (
         <div key={item._id}>
@@ -53,6 +57,14 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
         </div>
       );
     });
+  }, [datas]);
+
+  const getOrder = () => {
+    const ids = datas.map((item) => item._id);
+
+    postFetch('/orders', { ingredients: ids })
+      .then((resp) => setOrder(resp))
+      .catch(() => setError(true));
   };
 
   return (
@@ -67,7 +79,7 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
         />
       </div>
 
-      <div className={`${styles.ingridients} mb-4 pr-4`}>{ingredients()}</div>
+      <div className={`${styles.ingridients} mb-4 pr-4`}>{ingredients}</div>
 
       <div className={`${styles.item} mb-4 pl-8`}>
         <ConstructorElement
@@ -89,13 +101,14 @@ const BurgerConstructor: FC<Props> = ({ data }) => {
           Оформить заказ
         </Button>
         <span className={`${styles.totalPrice} text text_type_digits-medium`}>
-          <CurrencyIcon type='primary' /> {totalPrice()}
+          <CurrencyIcon type='primary' /> {totalPrice}
         </span>
       </div>
       {isModalOpen && (
         <>
           <Modal onClose={handleCloseModal}>
-            <OrderDetails id={order.id} status={order.status} />
+            {error && 'Ошибка получения данных...'}
+            {order && <OrderDetails {...order} />}
           </Modal>
         </>
       )}
